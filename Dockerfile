@@ -1,0 +1,26 @@
+FROM owncloud/ubuntu:18.04
+
+LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
+  org.label-schema.name="ownCloud Client" \
+  org.label-schema.vendor="ownCloud GmbH" \
+  org.label-schema.schema-version="1.0"
+
+RUN apt-get update -y && \
+  apt-get upgrade -y && \
+  apt-get install -y \
+    locales \
+    build-essential \
+    clang \
+    ninja-build \
+    cmake \
+    extra-cmake-modules \
+    libsqlite3-dev \
+    libssl-dev \
+    libcmocka-dev \
+    qt5-default \
+    qttools5-dev-tools \
+    libqt5webkit5-dev \
+    qt5keychain-dev \
+    kio-dev && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
