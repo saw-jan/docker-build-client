@@ -14,6 +14,8 @@ RUN apt-get update -y && \
     ninja-build \
     cmake \
     extra-cmake-modules \
+    pkg-config \
+    zlib1g-dev \
     libsqlite3-dev \
     libssl-dev \
     libcmocka-dev \
