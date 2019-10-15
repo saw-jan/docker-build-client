@@ -23,6 +23,6 @@ RUN apt-get update -y && \
     qttools5-dev-tools \
     libqt5webkit5-dev \
     qt5keychain-dev \
-    kio-dev && \
+    libkf5kio-dev && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
