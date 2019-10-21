@@ -1,4 +1,4 @@
-FROM owncloud/ubuntu:18.04
+FROM owncloud/ubuntu:19.04
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.name="ownCloud Client" \
@@ -23,6 +23,6 @@ RUN apt-get update -y && \
     qttools5-dev-tools \
     libqt5webkit5-dev \
     qt5keychain-dev \
-    kio-dev && \
+    libkf5kio-dev && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
