@@ -11,6 +11,7 @@ RUN apt-get update -y && \
     locales \
     build-essential \
     clang \
+    clazy \
     ninja-build \
     cmake \
     extra-cmake-modules \
