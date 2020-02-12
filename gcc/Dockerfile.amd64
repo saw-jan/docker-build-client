@@ -1,4 +1,4 @@
-FROM owncloud/ubuntu:19.04
+FROM owncloud/ubuntu:18.04
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.name="ownCloud Client" \
@@ -10,9 +10,6 @@ RUN apt-get update -y && \
     apt-get install -y \
       locales \
       build-essential \
-      clang \
-      clazy \
-      ninja-build \
       cmake \
       extra-cmake-modules \
       pkg-config \
@@ -24,6 +21,6 @@ RUN apt-get update -y && \
       qttools5-dev-tools \
       libqt5webkit5-dev \
       qt5keychain-dev \
-      libkf5kio-dev && \
+      kio-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

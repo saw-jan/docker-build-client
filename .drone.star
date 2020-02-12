@@ -1,6 +1,8 @@
 def main(ctx):
   versions = [
     'latest',
+    'gcc',
+    'clang',
   ]
 
   arches = [
@@ -19,8 +21,8 @@ def main(ctx):
   for version in versions:
     config['version'] = version
 
-    if config['version'] == 'latest':
-      config['path'] = 'latest'
+    if config['version'] in ['latest', 'gcc', 'clang']:
+      config['path'] = config['version']
     else:
       config['path'] = 'v%s' % config['version']
 
