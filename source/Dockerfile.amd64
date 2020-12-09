@@ -1,0 +1,16 @@
+FROM owncloud/ubuntu:latest
+
+LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
+  org.label-schema.name="ownCloud Client" \
+  org.label-schema.vendor="ownCloud GmbH" \
+  org.label-schema.schema-version="1.0"
+
+# https://github.com/owncloud/administration-internal/blob/master/tools/check_gpg_keyserver.sh
+RUN gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys E94E7B37
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+      imagemagick && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
