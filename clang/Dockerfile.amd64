@@ -21,6 +21,7 @@ RUN apt-get update -y && \
       libcmocka-dev \
       qt5-default \
       qttools5-dev-tools \
+      qttools5-dev \
       qt5keychain-dev \
       kio-dev && \
     apt-get clean && \
