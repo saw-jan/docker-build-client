@@ -6,7 +6,7 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.schema-version="1.0"
 
 # https://github.com/owncloud/administration-internal/blob/master/tools/check_gpg_keyserver.sh
-RUN gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys E94E7B37
+RUN gpg --keyserver hkp://pgp.mit.edu --recv-keys E94E7B37
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
