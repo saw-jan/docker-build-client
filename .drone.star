@@ -1,7 +1,6 @@
 def main(ctx):
   versions = [
     'latest',
-    'clang',
     'source',
   ]
 
@@ -21,7 +20,7 @@ def main(ctx):
   for version in versions:
     config['version'] = version
 
-    if config['version'] in ['latest', 'clang', 'source']:
+    if config['version'] in ['latest', 'source']:
       config['path'] = config['version']
     else:
       config['path'] = 'v%s' % config['version']
