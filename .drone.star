@@ -1,5 +1,6 @@
 def main(ctx):
   versions = [
+    '2.9',
     'latest',
     'source',
   ]
