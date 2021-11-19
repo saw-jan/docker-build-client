@@ -68,7 +68,10 @@ RUN apt-get update -y && \
       libsqlite3-dev \
       libssl-dev \
       libcmocka-dev \
-      qt5-default \
+      qtbase5-dev \
+      qtchooser \
+      qt5-qmake \
+      qtbase5-dev-tools \
       qttools5-dev-tools \
       qttools5-dev \
       libcloudproviders-dev \
