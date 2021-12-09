@@ -1,5 +1,5 @@
 # since we require a non-LTS release (which ships Qt 5.15 by default), we base the image directly on the ubuntu base image
-FROM ubuntu:21.10
+FROM ubuntu:21.04
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.name="ownCloud Client" \
