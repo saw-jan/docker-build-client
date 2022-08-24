@@ -1,0 +1,25 @@
+FROM fedora:36
+
+LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
+  org.label-schema.name="ownCloud Client" \
+  org.label-schema.vendor="ownCloud GmbH" \
+  org.label-schema.schema-version="1.0"
+
+RUN yum install -y \
+    langpacks-en \
+    clang \
+    clazy \
+    ninja-build \
+    extra-cmake-modules \
+    cmake \
+    extra-cmake-modules \
+    pkgconf-pkg-config \
+    zlib-devel \
+    libsqlite3x-devel \
+    openssl-devel \
+    libcmocka-devel \
+    qt5-qttools-devel \
+    qtkeychain-qt5-devel \
+    libcloudproviders-devel \
+    && yum autoremove -y \
+    && yum clean all
