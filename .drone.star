@@ -3,6 +3,7 @@ def main(ctx):
     '2.9',
     'latest',
     'source',
+    'fedora',
   ]
 
   arches = [
@@ -21,7 +22,7 @@ def main(ctx):
   for version in versions:
     config['version'] = version
 
-    if config['version'] in ['latest', 'source']:
+    if config['version'] in ['latest', 'source', 'fedora']:
       config['path'] = config['version']
     else:
       config['path'] = 'v%s' % config['version']
