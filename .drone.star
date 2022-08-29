@@ -36,7 +36,7 @@ def main(ctx):
       if config['version'] == 'latest':
         config['tag'] = arch
       elif config['version'] == 'fedora':
-        config['tag'] = '%s-%s-%s' % (ctx.build.commit[0:8], config['version'], arch)
+        config['tag'] = '%s.%s-%s' % (config['version'], '36', arch)
       else:
         config['tag'] = '%s-%s' % (config['version'], arch)
 
@@ -111,8 +111,7 @@ def manifest(config):
     'depends_on': [],
     'trigger': {
       'ref': [
-        'refs/heads/master',
-        'refs/tags/**',
+        'refs/pull/**',
       ],
     },
   }
@@ -152,11 +151,10 @@ def publish(config):
     },
     'when': {
       'ref': [
-        'refs/heads/master',
-        'refs/tags/**',
+        'refs/pull/**',
       ],
     },
   }]
 
 def steps(config):
-  return dryrun(config) + publish(config)
+  return publish(config)
