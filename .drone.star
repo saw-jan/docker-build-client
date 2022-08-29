@@ -10,6 +10,16 @@ def main(ctx):
     'amd64',
   ]
 
+  # image's base version
+  # For example, in latest's Dockerfile;
+  #   FROM ubuntu:22.04
+  # then,
+  #   'latest': '22.04'
+  base_img_tag = {
+    'fedora': '36',
+    'latest': '22.04',
+  }
+
   config = {
     'version': None,
     'arch': None,
@@ -35,6 +45,9 @@ def main(ctx):
 
       if config['version'] == 'latest':
         config['tag'] = arch
+        config['tag'] += '%s-%s' % (base_img_tag[config['version']], arch)
+      elif config['version'] == 'fedora':
+        config['tag'] = '%s.%s-%s' % (config['version'], base_img_tag[config['version']], arch)
       else:
         config['tag'] = '%s-%s' % (config['version'], arch)
 
