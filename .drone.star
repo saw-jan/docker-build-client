@@ -16,8 +16,8 @@ def main(ctx):
   # then,
   #   'latest': '22.04'
   base_img_tag = {
-    'fedora': '36',
-    'latest': '21.04',
+    'latest': ['ubuntu', '22.04'],
+    'fedora': ['fedora', '36'],
   }
 
   config = {
@@ -44,12 +44,11 @@ def main(ctx):
       config['arch'] = arch
 
       if config['version'] == 'latest':
-        config['tag'] = arch
-        config['tag'] += '%s-%s' % (base_img_tag[config['version']], arch)
-      elif config['version'] == 'fedora':
-        config['tag'] = '%s.%s-%s' % (config['version'], base_img_tag[config['version']], arch)
+        config['tags'] = ['%s-%s' % (base_img_tag[config['version']][0], arch)]
       else:
-        config['tag'] = '%s-%s' % (config['version'], arch)
+        config['tags'] = ['%s-%s' % (config['version'], arch)]
+      if config['version'] in base_img_tag:
+        config['tags'].append('%s-%s-%s' % (base_img_tag[config['version']][0], base_img_tag[config['version']][1], arch))
 
       if config['arch'] == 'amd64':
         config['platform'] = 'amd64'
@@ -60,7 +59,7 @@ def main(ctx):
       if config['arch'] == 'arm32v7':
         config['platform'] = 'arm'
 
-      config['internal'] = '%s-%s' % (ctx.build.commit, config['tag'])
+      config['internal'] = '%s-%s' % (ctx.build.commit, config['tags'])
 
       d = docker(config)
       m['depends_on'].append(d['name'])
@@ -205,7 +204,7 @@ def dryrun(config):
     'image': 'plugins/docker',
     'settings': {
       'dry_run': True,
-      'tags': config['tag'],
+      'tags': config['tags'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
       'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
@@ -228,7 +227,7 @@ def publish(config):
       'password': {
         'from_secret': 'public_password',
       },
-      'tags': config['tag'],
+      'tags': config['tags'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
       'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
