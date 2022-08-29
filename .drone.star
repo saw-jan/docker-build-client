@@ -59,15 +59,7 @@ def main(ctx):
     inner.append(m)
     stages.extend(inner)
 
-  after = [
-    notification(config),
-  ]
-
-  for s in stages:
-    for a in after:
-      a['depends_on'].append(s['name'])
-
-  return stages + after
+  return stages
 
 def docker(config):
   return {
@@ -125,69 +117,6 @@ def manifest(config):
     },
   }
 
-def notification(config):
-  steps = [{
-    'name': 'notify',
-    'image': 'plugins/slack',
-    'settings': {
-      'webhook': {
-        'from_secret': 'private_rocketchat',
-      },
-      'channel': 'builds',
-    },
-    'when': {
-      'status': [
-        'success',
-        'failure',
-      ],
-    },
-  }]
-
-  downstream = [{
-    'name': 'downstream',
-    'image': 'plugins/downstream',
-    'settings': {
-      'token': {
-        'from_secret': 'drone_token',
-      },
-      'server': 'https://drone.owncloud.com',
-      'repositories': config['trigger'],
-    },
-    'when': {
-      'status': [
-        'success',
-      ],
-    },
-  }]
-
-  if config['trigger']:
-    steps = downstream + steps
-
-  return {
-    'kind': 'pipeline',
-    'type': 'docker',
-    'name': 'notification',
-    'platform': {
-      'os': 'linux',
-      'arch': 'amd64',
-    },
-    'clone': {
-      'disable': True,
-    },
-    'steps': steps,
-    'depends_on': [],
-    'trigger': {
-      'ref': [
-        'refs/heads/master',
-        'refs/tags/**',
-      ],
-      'status': [
-        'success',
-        'failure',
-      ],
-    },
-  }
-
 def dryrun(config):
   return [{
     'name': 'dryrun',
@@ -196,7 +125,7 @@ def dryrun(config):
       'dry_run': True,
       'tags': config['tag'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
-      'repo': 'owncloudci/%s' % config['repo'],
+      'repo': 'sawjan/desktop-client',
       'context': config['path'],
     },
     'when': {
@@ -211,15 +140,13 @@ def publish(config):
     'name': 'publish',
     'image': 'plugins/docker',
     'settings': {
-      'username': {
-        'from_secret': 'public_username',
-      },
+      'username': 'sawjan',
       'password': {
         'from_secret': 'public_password',
       },
       'tags': config['tag'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
-      'repo': 'owncloudci/%s' % config['repo'],
+      'repo': 'sawjan/desktop-client',
       'context': config['path'],
       'pull_image': False,
     },
