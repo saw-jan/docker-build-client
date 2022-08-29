@@ -35,6 +35,8 @@ def main(ctx):
 
       if config['version'] == 'latest':
         config['tag'] = arch
+      elif config['version'] == 'fedora':
+        config['tag'] = '%s-%s-%s' % (ctx.build.commit[0:8], config['version'], arch)
       else:
         config['tag'] = '%s-%s' % (config['version'], arch)
 
