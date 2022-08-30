@@ -1,14 +1,10 @@
-# since we require a non-LTS release (which ships Qt 5.15 by default), we base the image directly on the ubuntu base image
-FROM ubuntu:22.04
+FROM fedora:36
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.name="ownCloud Client" \
   org.label-schema.vendor="ownCloud GmbH" \
   org.label-schema.schema-version="1.0"
 
-# from https://github.com/owncloud-docker/ubuntu/
-
-ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 ADD https://github.com/owncloud-ci/wait-for/releases/download/v1.0.2/wait-for-linux-amd64 /usr/bin/wait-for
@@ -25,57 +21,47 @@ RUN chmod +x /usr/bin/wait-for && \
   echo "${GOMPLATE_CHECKSUM} /usr/bin/gomplate" | sha256sum -c - && \
   chmod +x /usr/bin/gomplate
 
-RUN apt-get update -y && \
-  apt-get install -y \
+RUN yum install -y \
     ca-certificates \
     bash \
     vim \
     curl \
     wget \
-    procps \
+    procps-ng \
     apt-utils \
-    apt-transport-https \
-    iputils-ping \
+    iputils \
     bzip2 \
     unzip \
-    cron \
+    cronie \
     git-core \
     sshpass \
     tree \
     jq \
-    gnupg \
-    libnss-wrapper && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    gnupg2 \
+    nss_wrapper \
+    && yum autoremove -y \
+    && yum clean all
 
 COPY ./overlay /
 CMD ["bash"]
 
-# CI dependencies
-
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-      locales \
-      build-essential \
-      clang \
-      clazy \
-      ninja-build \
-      cmake \
-      extra-cmake-modules \
-      pkg-config \
-      zlib1g-dev \
-      libsqlite3-dev \
-      libssl-dev \
-      libcmocka-dev \
-      qtbase5-dev \
-      qtchooser \
-      qt5-qmake \
-      qtbase5-dev-tools \
-      qttools5-dev-tools \
-      qttools5-dev \
-      libcloudproviders-dev \
-      qt5keychain-dev \
-      libkf5kio-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Dependencies for building desktop-client
+RUN yum install -y \
+    langpacks-en \
+    clang \
+    clazy \
+    ninja-build \
+    cmake \
+    extra-cmake-modules \
+    pkgconf-pkg-config \
+    zlib-devel \
+    libsqlite3x-devel \
+    openssl-devel \
+    libcmocka-devel \
+    qt5-qtbase-devel \
+    qt5-qttools-devel \
+    libcloudproviders-devel \
+    qtkeychain-qt5-devel \
+    kf5-kio-devel \
+    && yum autoremove -y \
+    && yum clean all

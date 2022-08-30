@@ -3,11 +3,22 @@ def main(ctx):
     '2.9',
     'latest',
     'source',
+    'fedora',
   ]
 
   arches = [
     'amd64',
   ]
+
+  # image's base version
+  # For example, in latest's Dockerfile;
+  #   FROM ubuntu:22.04
+  # then,
+  #   'latest': '22.04'
+  base_img_tag = {
+    'latest': ['ubuntu', '22.04'],
+    'fedora': ['fedora', '36'],
+  }
 
   config = {
     'version': None,
@@ -21,7 +32,7 @@ def main(ctx):
   for version in versions:
     config['version'] = version
 
-    if config['version'] in ['latest', 'source']:
+    if config['version'] in ['latest', 'source', 'fedora']:
       config['path'] = config['version']
     else:
       config['path'] = 'v%s' % config['version']
@@ -33,9 +44,11 @@ def main(ctx):
       config['arch'] = arch
 
       if config['version'] == 'latest':
-        config['tag'] = arch
+        config['tags'] = ['%s-%s' % (base_img_tag[config['version']][0], arch)]
       else:
-        config['tag'] = '%s-%s' % (config['version'], arch)
+        config['tags'] = ['%s-%s' % (config['version'], arch)]
+      if config['version'] in base_img_tag:
+        config['tags'].append('%s-%s-%s' % (base_img_tag[config['version']][0], base_img_tag[config['version']][1], arch))
 
       if config['arch'] == 'amd64':
         config['platform'] = 'amd64'
@@ -46,7 +59,7 @@ def main(ctx):
       if config['arch'] == 'arm32v7':
         config['platform'] = 'arm'
 
-      config['internal'] = '%s-%s' % (ctx.build.commit, config['tag'])
+      config['internal'] = '%s-%s' % (ctx.build.commit, config['tags'])
 
       d = docker(config)
       m['depends_on'].append(d['name'])
@@ -191,7 +204,7 @@ def dryrun(config):
     'image': 'plugins/docker',
     'settings': {
       'dry_run': True,
-      'tags': config['tag'],
+      'tags': config['tags'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
       'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
@@ -214,7 +227,7 @@ def publish(config):
       'password': {
         'from_secret': 'public_password',
       },
-      'tags': config['tag'],
+      'tags': config['tags'],
       'dockerfile': '%s/Dockerfile.%s' % (config['path'], config['arch']),
       'repo': 'owncloudci/%s' % config['repo'],
       'context': config['path'],
