@@ -20,6 +20,7 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/$(. /etc/os-release; ec
       imagemagick \
       jq \
       rclone \
+      cmake \
       powershell && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
