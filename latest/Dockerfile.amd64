@@ -79,3 +79,12 @@ RUN apt-get update -y && \
       libkf5kio-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN git clone https://github.com/kdab/kdsingleapplication && \
+    cd kdsingleapplication && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
+    ninja install -v && \
+    cd ../.. && \
+    rm -r kdsingleapplication
