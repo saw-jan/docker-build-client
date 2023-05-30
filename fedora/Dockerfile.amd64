@@ -58,10 +58,10 @@ RUN yum install -y \
     libsqlite3x-devel \
     openssl-devel \
     libcmocka-devel \
-    qt5-qtbase-devel \
-    qt5-qttools-devel \
+    qt6-qtbase-devel \
+    qt6-qttools-devel \
+    qtkeychain-qt6-devel \
     libcloudproviders-devel \
-    qtkeychain-qt5-devel \
     kf5-kio-devel \
     && yum autoremove -y \
     && yum clean all
