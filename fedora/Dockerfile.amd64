@@ -58,19 +58,21 @@ RUN yum install -y \
     libsqlite3x-devel \
     openssl-devel \
     libcmocka-devel \
-    qt5-qtbase-devel \
-    qt5-qttools-devel \
+    qt6-qtbase-devel \
+    qt6-qttools-devel \
+    qtkeychain-qt6-devel \
     libcloudproviders-devel \
-    qtkeychain-qt5-devel \
     kf5-kio-devel \
     && yum autoremove -y \
     && yum clean all
+
+ENV CMAKE_PREFIX_PATH=/usr/lib64/cmake/Qt6
 
 RUN git clone https://github.com/kdab/kdsingleapplication && \
     cd kdsingleapplication && \
     mkdir build && \
     cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
+    cmake .. -DKDSingleApplication_QT6=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
     ninja install -v && \
     cd ../.. && \
     rm -r kdsingleapplication && \
@@ -80,7 +82,7 @@ RUN git clone https://github.com/owncloud/libre-graph-api-cpp-qt-client && \
     cd libre-graph-api-cpp-qt-client/client && \
     mkdir build && \
     cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
+    cmake .. -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
     ninja install -v && \
     cd ../../.. && \
     rm -r libre-graph-api-cpp-qt-client && \
