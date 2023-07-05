@@ -22,7 +22,6 @@ def main(ctx):
   config = {
     'version': None,
     'arch': None,
-    'trigger': [],
     'repo': ctx.repo.name
   }
 
@@ -137,7 +136,7 @@ def notification(config):
     'image': 'plugins/slack',
     'settings': {
       'webhook': {
-        'from_secret': 'private_rocketchat',
+        'from_secret': 'rocketchat_chat_webhook',
       },
       'channel': 'builds',
     },
@@ -148,26 +147,6 @@ def notification(config):
       ],
     },
   }]
-
-  downstream = [{
-    'name': 'downstream',
-    'image': 'plugins/downstream',
-    'settings': {
-      'token': {
-        'from_secret': 'drone_token',
-      },
-      'server': 'https://drone.owncloud.com',
-      'repositories': config['trigger'],
-    },
-    'when': {
-      'status': [
-        'success',
-      ],
-    },
-  }]
-
-  if config['trigger']:
-    steps = downstream + steps
 
   return {
     'kind': 'pipeline',
