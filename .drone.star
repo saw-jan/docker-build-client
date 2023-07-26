@@ -1,6 +1,5 @@
 def main(ctx):
   versions = [
-    'latest',
     'source',
     'fedora',
   ]
@@ -10,12 +9,7 @@ def main(ctx):
   ]
 
   # image's base version
-  # For example, in latest's Dockerfile;
-  #   FROM ubuntu:22.04
-  # then,
-  #   'latest': '22.04'
   base_img_tag = {
-    'latest': ['ubuntu', '22.04'],
     'fedora': ['fedora', '38'],
   }
 
