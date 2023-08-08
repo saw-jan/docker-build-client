@@ -58,8 +58,8 @@ RUN yum install -y \
     libsqlite3x-devel \
     openssl-devel \
     libcmocka-devel \
-    qt6-qtbase-devel \
-    qt6-qttools-devel \
+    qt6-qtbase-devel-6.4.3 \
+    qt6-qttools-devel-6.4.3 \
     qtkeychain-qt6-devel \
     libcloudproviders-devel \
     kf5-kio-devel \
