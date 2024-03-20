@@ -6,6 +6,9 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.schema-version="1.0"
 
 ENV TERM xterm
+ENV LANG C.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL C.UTF-8
 
 ADD https://github.com/owncloud-ci/wait-for/releases/download/v1.0.2/wait-for-linux-amd64 /usr/bin/wait-for
 
@@ -48,7 +51,7 @@ CMD ["bash"]
 # Dependencies for building desktop-client
 RUN yum install -y \
     langpacks-en \
-    clang \
+    clang-tools-extra \
     clazy \
     ninja-build \
     cmake \
@@ -59,9 +62,9 @@ RUN yum install -y \
     openssl-devel \
     libcmocka-devel \
     qt6-qtbase-devel-6.4.3 \
+    qt6-qtdeclarative-devel-6.4.3 \
     qt6-qttools-devel-6.4.3 \
     qtkeychain-qt6-devel \
-    libcloudproviders-devel \
     kf5-kio-devel \
     && yum autoremove -y \
     && yum clean all
