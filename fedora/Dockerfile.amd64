@@ -42,6 +42,7 @@ RUN yum install -y \
     jq \
     gnupg2 \
     nss_wrapper \
+    xz \
     && yum autoremove -y \
     && yum clean all
 
@@ -55,15 +56,14 @@ RUN yum install -y \
     clazy \
     ninja-build \
     cmake \
-    extra-cmake-modules \
     pkgconf-pkg-config \
     zlib-devel \
     libsqlite3x-devel \
     openssl-devel \
     libcmocka-devel \
-    qt6-qtbase-devel-6.4.3 \
-    qt6-qtdeclarative-devel-6.4.3 \
-    qt6-qttools-devel-6.4.3 \
+    qt6-qtbase-devel-6.6.0 \
+    qt6-qtdeclarative-devel-6.6.0 \
+    qt6-qttools-devel-6.6.0 \
     qtkeychain-qt6-devel \
     kf5-kio-devel \
     && yum autoremove -y \
@@ -91,3 +91,14 @@ RUN git clone https://github.com/owncloud/libre-graph-api-cpp-qt-client && \
     cd ../../.. && \
     rm -r libre-graph-api-cpp-qt-client && \
     ldconfig
+
+RUN curl -OL https://download.kde.org/stable/frameworks/6.0/extra-cmake-modules-6.0.0.tar.xz && \
+  tar xf ./extra-cmake-modules-6.0.0.tar.xz && \
+  cd extra-cmake-modules-6.0.0 && \
+  mkdir build && \
+  cd build && \
+  cmake .. -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}" -DQT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
+  ninja install -v && \
+  cd ../.. && \
+  rm -r extra-cmake-modules* && \
+  ldconfig
