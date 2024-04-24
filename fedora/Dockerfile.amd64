@@ -1,9 +1,9 @@
-FROM fedora:38
+FROM fedora:39
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
-  org.label-schema.name="ownCloud Client" \
-  org.label-schema.vendor="ownCloud GmbH" \
-  org.label-schema.schema-version="1.0"
+    org.label-schema.name="ownCloud Client" \
+    org.label-schema.vendor="ownCloud GmbH" \
+    org.label-schema.schema-version="1.0"
 
 ENV TERM xterm
 ENV LANG C.UTF-8
@@ -19,10 +19,10 @@ ENV GOMPLATE_CHECKSUM=7dbabe30095f822ec38f5f70711ff121c26e588227da4cc05208417cfa
 ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.9.0/gomplate_linux-amd64 /usr/bin/gomplate
 
 RUN chmod +x /usr/bin/wait-for && \
-  echo "${SU_EXEC_CHECKSUM} /usr/bin/su-exec" | sha256sum -c - && \
-  chmod +x /usr/bin/su-exec && \
-  echo "${GOMPLATE_CHECKSUM} /usr/bin/gomplate" | sha256sum -c - && \
-  chmod +x /usr/bin/gomplate
+    echo "${SU_EXEC_CHECKSUM} /usr/bin/su-exec" | sha256sum -c - && \
+    chmod +x /usr/bin/su-exec && \
+    echo "${GOMPLATE_CHECKSUM} /usr/bin/gomplate" | sha256sum -c - && \
+    chmod +x /usr/bin/gomplate
 
 RUN yum install -y \
     ca-certificates \
@@ -56,14 +56,15 @@ RUN yum install -y \
     clazy \
     ninja-build \
     cmake \
+    extra-cmake-modules \
     pkgconf-pkg-config \
     zlib-devel \
     libsqlite3x-devel \
     openssl-devel \
     libcmocka-devel \
-    qt6-qtbase-devel-6.6.0 \
-    qt6-qtdeclarative-devel-6.6.0 \
-    qt6-qttools-devel-6.6.0 \
+    qt6-qtbase-devel-6.6.2 \
+    qt6-qtdeclarative-devel-6.6.2 \
+    qt6-qttools-devel-6.6.2 \
     qtkeychain-qt6-devel \
     kf5-kio-devel \
     && yum autoremove -y \
@@ -93,12 +94,12 @@ RUN git clone https://github.com/owncloud/libre-graph-api-cpp-qt-client && \
     ldconfig
 
 RUN curl -OL https://download.kde.org/stable/frameworks/6.0/extra-cmake-modules-6.0.0.tar.xz && \
-  tar xf ./extra-cmake-modules-6.0.0.tar.xz && \
-  cd extra-cmake-modules-6.0.0 && \
-  mkdir build && \
-  cd build && \
-  cmake .. -DCMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}" -DQT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
-  ninja install -v && \
-  cd ../.. && \
-  rm -r extra-cmake-modules* && \
-  ldconfig
+    tar xf ./extra-cmake-modules-6.0.0.tar.xz && \
+    cd extra-cmake-modules-6.0.0 && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DQT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -G Ninja && \
+    ninja install -v && \
+    cd ../.. && \
+    rm -r extra-cmake-modules* && \
+    ldconfig
